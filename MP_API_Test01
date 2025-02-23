@@ -1,0 +1,39 @@
+# Matterport API Starter Project with Secure API Key Storage
+import os
+import requests
+
+# Securely access the API key from the environment variable
+api_key = os.getenv('MATTERPORT_API_KEY')
+
+if not api_key:
+    print("Error: API key not found. Please set the MATTERPORT_API_KEY environment variable.")
+    exit()
+
+# Example API endpoint to fetch Matterport spaces
+url = 'https://api.matterport.com/api/spaces'
+
+# Headers with the API key for authorization
+headers = {
+    'Authorization': f'Bearer {api_key}'
+}
+
+# Make a GET request to the Matterport API
+try:
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        print("Matterport Spaces Data:")
+        for space in data.get('spaces', []):
+            print(f"Space ID: {space.get('sid')}")
+            print(f"Name: {space.get('name', 'No name available')}")
+            print(f"Created At: {space.get('created')}")
+            print("---")
+    else:
+        print(f"Failed to fetch data. Status code: {response.status_code}")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+# Placeholder for future integration and data handling
+# You can expand this code to interact with specific Matterport models, fetch metadata,
+# or visualize the data in a more structured form
+
