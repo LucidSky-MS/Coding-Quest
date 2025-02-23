@@ -1,3 +1,4 @@
+
 #Level 2 - API Explorer
 
 #After installing the requests library from the Pip tab Making a simple GET Request:
@@ -10,16 +11,16 @@ if response.status_code == 200:
     print(response.json())
 else:
     print("API request failed.")
-    
+
 #Then handling JSON data. Parse and Use API data:
-	
+
 data = response.json()
 print(f"Task: {data['title']}")
 print(f"Completed: {data['completed']}")
 
 
 #Then building my first API project using the random joke generator:
-	
+
 import requests
 
 response = requests.get("https://official-joke-api.appspot.com/random_joke")
@@ -40,3 +41,34 @@ try:
         print(f"Failed to retrieve data. Status code: {response.status_code}")
 except Exception as e:
     print(f"An error occurred: {e}")
+    
+#With enhancements to include: Functions (fetch_data_from_api and display_task_info) make the code modular and reusable. Error messages are more specific, helping with debugging. The code is easier to extend, for example, to handle multiple API endpoints or dynamic queries.
+
+
+import requests
+
+def fetch_data_from_api(url: str) -> dict:
+    """Fetch data from the given API URL and handle errors."""
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"Failed to retrieve data. Status code: {response.status_code}")
+            return {}
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return {}
+
+def display_task_info(data: dict):
+    """Display formatted task information from API data."""
+    if data:
+        print(f"Task: {data.get('title', 'No title available')}")
+        print(f"Completed: {'Yes' if data.get('completed', False) else 'No'}")
+    else:
+        print("No data available to display.")
+
+# Example usage
+api_url = "https://jsonplaceholder.typicode.com/todos/1"
+data = fetch_data_from_api(api_url)
+display_task_info(data)
